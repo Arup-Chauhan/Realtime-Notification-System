@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"Realtime-Notification-System/database"
-	"Realtime-Notification-System/handlers"
+	"Realtime-Notification-System/backend_system/database"
+	"Realtime-Notification-System/backend_system/handlers"
 )
 
 func Router() {
