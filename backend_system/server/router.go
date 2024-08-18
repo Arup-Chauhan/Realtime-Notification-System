@@ -1,12 +1,12 @@
 package server
 
 import (
+	"Realtime-Notification-System/backend-system/database"
+	"Realtime-Notification-System/backend-system/handlers"
+
 	"fmt"
 	"log"
 	"net/http"
-
-	"Realtime-Notification-System/backend_system/database"
-	"Realtime-Notification-System/backend_system/handlers"
 )
 
 func Router() {

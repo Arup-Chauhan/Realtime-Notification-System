@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Realtime-Notification-System/database"
-	"Realtime-Notification-System/server"
+	"Realtime-Notification-System/backend-system/database"
+	"Realtime-Notification-System/backend-system/server"
 )
 
 func main() {
