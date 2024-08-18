@@ -1,21 +1,19 @@
 package server
 
 import (
-	"Realtime-Notification-System/backend_system/database"
 	"Realtime-Notification-System/backend_system/handlers"
-
-	"fmt"
-	"log"
+	middleware "Realtime-Notification-System/middleware_layer"
+	"database/sql"
 	"net/http"
 )
 
-func Router() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Go GoLang")
-	})
+func Router(db *sql.DB) error {
+	// Create a new ServeMux
+	mux := http.NewServeMux()
 
-	http.HandleFunc("/submit", handlers.SubmitHandler(database.DB))
+	// Set up the routes with middleware
+	mux.Handle("/submit", middleware.EnableCORS(handlers.SubmitHandler(db)))
 
-	fmt.Println("Server running on standard 8080 localhost port")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// Start the server using the ServeMux
+	return http.ListenAndServe(":8080", mux)
 }
