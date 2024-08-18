@@ -1,8 +1,8 @@
 package server
 
 import (
-	"Realtime-Notification-System/backend-system/database"
-	"Realtime-Notification-System/backend-system/handlers"
+	"Realtime-Notification-System/backend_system/database"
+	"Realtime-Notification-System/backend_system/handlers"
 
 	"fmt"
 	"log"
@@ -11,7 +11,7 @@ import (
 
 func Router() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to the Webserver: Level 1")
+		fmt.Fprintf(w, "Go GoLang")
 	})
 
 	http.HandleFunc("/submit", handlers.SubmitHandler(database.DB))
