@@ -12,6 +12,7 @@ This project is a simple web application built in Go that allows users to submit
 - [API Endpoints](#api-endpoints)
 - [Environment Variables](#environment-variables)
 - [Database](#database)
+- [Middleware](#middleware)
 - [Test Output](#test-output)
 - [Contributing](#contributing)
 - [License](#license)
@@ -25,23 +26,41 @@ The Realtime Notification System is designed to be a multi-level project where u
 - Submit text-based content via a POST request.
 - Store submitted content in a MySQL database.
 - Simple and modular project structure, allowing for easy expansion.
+- Frontend developed with React and TypeScript for user interaction.
+- Middleware layer implemented to handle Cross-Origin Resource Sharing (CORS).
 
 ## Project Structure
 
 ```plaintext
 Realtime-Notification-System/
-├── database/
-│   └── db.go              # Handles MySQL database connection
-├── handlers/
-│   └── submit.go          # Handles submission of content
-├── server/
-│   └── router.go          # Sets up the HTTP server and routes
-├── .env                   # Environment variables (not included in version control)
-├── .env.example           # Example environment variables file
-├── .gitignore             # Git ignore file to exclude sensitive and unnecessary files
-├── go.mod                 # Go module file
-├── go.sum                 # Go checksum file for dependencies
-└── main.go                # Main entry point of the application
+├── backend_system/
+│   ├── database/
+│   │   └── db.go                # Handles MySQL database connection
+│   ├── handlers/
+│   │   └── submit.go            # Handles submission of content
+│   └── server/
+│       ├── main.go              # Main entry point of the backend application
+│       └── mysql_schema.sql     # SQL schema for setting up the MySQL database
+├── frontend_application/
+│   ├── public/                  # Public assets for the React frontend
+│   ├── src/
+│   │   ├── App.tsx              # Main React component
+│   │   ├── index.tsx            # React entry point
+│   │   └── ...                  # Other React components and assets
+│   ├── package.json             # Frontend dependencies and scripts
+│   ├── tsconfig.json            # TypeScript configuration
+│   └── ...                      # Other frontend configuration files
+├── middleware_layer/
+│   └── cors.go                  # Middleware for handling CORS
+├── project_documentation/
+│   ├── MySQL_DB_Output.png      # Screenshot of the MySQL database output
+│   ├── POSTMAN_API_test.png     # Screenshot of the Postman API test
+│   └── ...                      # Other project documentation files
+├── .env                         # Environment variables (not included in version control)
+├── .env.example                 # Example environment variables file
+├── .gitignore                   # Git ignore file to exclude sensitive and unnecessary files
+├── go.mod                       # Go module file
+└── go.sum                       # Go checksum file for dependencies
 ```
 
 ## Installation
@@ -49,6 +68,7 @@ Realtime-Notification-System/
 ### Prerequisites
 
 - Go (version 1.23 or later)
+- Node.js and npm (for frontend)
 - MySQL
 
 ### Clone the Repository
@@ -58,29 +78,38 @@ git clone https://github.com/yourusername/Realtime-Notification-System.git
 cd Realtime-Notification-System
 ```
 
-### Install Dependencies
+### Backend Setup
+
+#### Install Dependencies
 
 Ensure you have the required Go packages:
 
 ```bash
+cd backend_system
 go mod tidy
 ```
 
-### Set Up the Database
+#### Set Up the Database
 
 1. Start your MySQL server.
-2. Create the database and table:
+2. Create the database and table using the provided `mysql_schema.sql`:
 
-```sql
-CREATE DATABASE IF NOT EXISTS realtime_notification_system;
+```bash
+mysql -u your_username -p realtime_notification_system < backend_system/server/mysql_schema.sql
+```
 
-USE realtime_notification_system;
+### Frontend Setup
 
-CREATE TABLE IF NOT EXISTS submissions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT NOT NULL,
-    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+1. Navigate to the `frontend_application` directory:
+
+```bash
+cd frontend_application
+```
+
+2. Install the frontend dependencies:
+
+```bash
+npm install
 ```
 
 ### Set Up Environment Variables
@@ -101,19 +130,31 @@ MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 ```
 
-### Run the Application
+### Run the Backend
 
 ```bash
+cd backend_system/server
 go run main.go
 ```
 
 The server should start on `http://localhost:8080`.
 
+### Run the Frontend
+
+In a new terminal window, navigate to the `frontend_application` directory and start the React development server:
+
+```bash
+cd frontend_application
+npm start
+```
+
+The frontend should start on `http://localhost:3000`.
+
 ## Usage
 
 ### Submit Content
 
-You can submit content to the server using Postman, `curl`, or an HTML form.
+You can submit content to the server using the frontend form, Postman, or `curl`.
 
 #### Using `curl`
 
@@ -163,6 +204,40 @@ CREATE TABLE submissions (
 );
 ```
 
+## Middleware
+
+The project includes a middleware layer to handle Cross-Origin Resource Sharing (CORS). This is necessary when the frontend and backend are running on different origins (e.g., different ports or domains). The CORS middleware allows the frontend to make requests to the backend without encountering cross-origin errors.
+
+### CORS Middleware Implementation
+
+The CORS middleware is implemented in `middleware_layer/cors.go` and is applied to the routes in the backend.
+
+```go
+package middleware
+
+import (
+ "net/http"
+)
+
+// EnableCORS is a middleware that handles Cross-Origin Resource Sharing (CORS)
+func EnableCORS(next http.Handler) http.Handler {
+ return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+  w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+  w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+  // Handle preflight requests
+  if r.Method == "OPTIONS" {
+   return
+  }
+
+  next.ServeHTTP(w, r)
+ })
+}
+```
+
+This middleware is crucial for allowing the frontend, typically running on `http://localhost:3000`, to interact with the backend on `http://localhost:8080` during development.
+
 ## Test Output
 
 This section provides evidence that the system works as intended by showcasing the results of testing the `/submit` endpoint.
@@ -171,18 +246,14 @@ This section provides evidence that the system works as intended by showcasing t
 
 Here is a screenshot of a POST request made in Postman to the `/submit` endpoint, with the content being successfully submitted:
 
-![alt text](documentation/POSTMAN_API_test.png)
+![Postman API Test](project_documentation/POSTMAN_API_test.png)
 
 ### MySQL Database Content
 
 Here is a screenshot of the MySQL database showing the submitted content stored in the `submissions` table:
 
-![alt text](documentation/MySQL_DB_Output.png)
+![MySQL DB Output](project_documentation/MySQL_DB_Output.png)
 
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
