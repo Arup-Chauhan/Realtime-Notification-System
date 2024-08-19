@@ -7,14 +7,23 @@ const App: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('content', content);
+
     try {
-      const result = await axios.post('http://localhost:8080/submit', { content });
-      setResponse(result.data);
+        const result = await axios.post('http://localhost:8080/submit', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        setResponse(result.data);
     } catch (error) {
-      setResponse('Error submitting content');
-      console.error(error);
+        console.error(error);
+        setResponse('Error submitting content');
     }
-  };
+};
+
+
 
   return (
     <div style={{ padding: '20px' }}>
