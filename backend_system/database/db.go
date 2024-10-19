@@ -3,13 +3,12 @@ package database
 import (
 	"database/sql"
 	"log"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func InitDB() *sql.DB {
-	dsn := os.Getenv("MYSQL_DSN")
+// InitDB initializes the database with a provided DSN
+func InitDB(dsn string) *sql.DB {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)

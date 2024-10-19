@@ -11,10 +11,8 @@ const App: React.FC = () => {
     formData.append('content', content);
 
     try {
-        const result = await axios.post('http://localhost:8080/submit', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+        const result = await axios.post('http://localhost:8080/submit', new URLSearchParams({ content }), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         });
         setResponse(result.data);
     } catch (error) {

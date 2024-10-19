@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -21,6 +22,7 @@ func SubmitHandler(db *sql.DB) http.HandlerFunc {
 
 		_, err := db.Exec("INSERT INTO submissions (content) VALUES (?)", content)
 		if err != nil {
+			log.Printf("Database error: %v", err)
 			http.Error(w, "Failed to insert content", http.StatusInternalServerError)
 			return
 		}

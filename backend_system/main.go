@@ -1,16 +1,34 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"Realtime-Notification-System/backend_system/database"
 	"Realtime-Notification-System/backend_system/server"
-	"log"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Initialize the database connection
-	db := database.InitDB()
+	// Load the .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 
-	// Start the server using the custom router
-	log.Println("Server starting on port 8080...")
+	// Get the DSN from environment variables
+	dsn := os.Getenv("MYSQL_USER") + ":" +
+		os.Getenv("MYSQL_PASSWORD") + "@tcp(" +
+		os.Getenv("MYSQL_HOST") + ":" + os.Getenv("MYSQL_PORT") +
+		")/" + os.Getenv("MYSQL_DB")
+
+	// Initialize the database with the DSN
+	db := database.InitDB(dsn)
+	defer db.Close()
+
+	log.Println("Application started successfully")
+	log.Println("Server running on http://localhost:8080")
 	log.Fatal(server.Router(db))
+
 }

@@ -15,7 +15,8 @@ func EnableCORS(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		// Handle preflight requests
-		if r.Method == "OPTIONS" {
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
 
