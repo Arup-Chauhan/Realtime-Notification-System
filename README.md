@@ -11,16 +11,15 @@ The system supports both **user notifications** via user input and **clock-based
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Real-World Applications](#real-world-applications)
+- [System Architecture](#system-architecture)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
-- [Environment Variables](#environment-variables)
 - [Database](#database)
 - [Middleware](#middleware)
 - [Test Output](#test-output)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -35,7 +34,6 @@ The **Realtime Notification System** integrates a **Go backend**, **Redis-based 
 ### **Frontend UI Example:**
 
 ![Frontend UI Example Placeholder](./project_documentation/assets/Frontend%20UI.png)  
-
 
 ---
 
@@ -53,33 +51,65 @@ The **Realtime Notification System** integrates a **Go backend**, **Redis-based 
 
 ## **Real-World Applications**
 
-This notification system has a wide range of real-world applications across multiple industries. Below are some **key use cases**:
+This system drives **real-time engagement** across multiple industries. Below are some of its key use cases:
 
-1. **News and Media Platforms**  
-   Real-time notifications deliver **breaking news updates** and **content recommendations** to boost user engagement and increase ad revenue through **prompt content delivery**.
+### **1. News and Media Platforms**  
 
-2. **FinTech Platforms**  
-   Financial services platforms notify users of **price alerts, transaction updates, and market news**, helping them stay ahead in investments and manage risks in real-time. Notifications also **facilitate smoother financial transactions** and alerts for **payment failures** or **account activities**.
+- Deliver **breaking news alerts** and **content recommendations** instantly.  
+- Boost user engagement and **ad revenue** with timely notifications.
 
-3. **Gaming Platforms and Monetization Strategies**  
-   Online gaming platforms rely heavily on notifications to promote **live events, leaderboard updates**, and **time-sensitive offers**. They use real-time alerts to boost **user retention and monetization** through **in-app purchases, reward claims, and exclusive event notifications**.
+### **2. Gaming Platforms and Monetization**  
 
-4. **E-Commerce Platforms**  
-   E-commerce platforms send **order status updates**, alerts for **promotions**, and **stock availability notifications**, driving higher sales and improving customer satisfaction.
+- Notify players about **live events, rewards**, and **leader-board updates**.  
+- Encourage **in-app purchases** and enhance **player retention**.
 
-5. **Social Media and Messaging Apps**  
-   Social media platforms like WhatsApp, Twitter, and Instagram use notifications to inform users about **mentions, direct messages, new followers**, and **likes**, keeping the user base engaged.
+### **3. FinTech Platforms**  
 
-6. **IoT and Monitoring Systems**  
-   IoT devices send real-time alerts for **system anomalies, motion detection**, or **temperature changes**, enabling quick responses and safety measures. Industrial IoT systems use notifications to flag **equipment failures** and **maintenance needs**.
+- Provide real-time **stock alerts, transaction updates**, and **payment notifications**.  
+- Help users manage finances and stay ahead with **market insights**.
 
-7. **Healthcare Systems**  
-   Hospitals and clinics notify patients with **appointment reminders**, **lab results**, or **prescription updates**, reducing missed appointments and enhancing patient engagement.
+### **4. E-Commerce Platforms**  
 
-8. **Event and Calendar Management Systems**  
-   Users receive reminders for **upcoming meetings, events**, and **webinars**, ensuring better participation and time management.
+- Send updates on **order tracking, promotions**, and **stock availability**.  
+- Improve **sales conversions** and enhance customer satisfaction.
+
+### **5. Social Media and Messaging Apps**  
+
+- Notify users about **mentions, messages**, and **new followers**.  
+- Keep the user base engaged and connected.
+
+### **6. IoT and Monitoring Systems**  
+
+- Alert on **system anomalies, equipment failures**, and **temperature changes**.  
+- Enable fast responses to prevent downtime and ensure safety.
+
+### **7. Healthcare Systems**  
+
+- Send **appointment reminders, lab results**, and **prescription updates**.  
+- Reduce missed appointments and improve patient engagement.
+
+### **8. Event and Calendar Management Systems**  
+
+- Provide reminders for **meetings, events**, and **webinars**.  
+- Improve participation and ensure **better time management**.
 
 ---
+
+This **format**:
+
+- Uses **bullet points** for clarity.
+- Keeps each **use case brief** and highlights the **core impact**.
+- Aligns with the rest of the README structure for a consistent look.
+
+---
+
+## **System Architecture**
+
+```plaintext
+Here is a system design diagram for the system
+```
+
+![SA Diagram](./project_documentation/assets/SA/System%20Architecture%20File.png)  
 
 ## **Project Structure**
 
@@ -225,7 +255,7 @@ Every minute, a **clock-based event** publishes a notification via Redis to simu
 
 ---
 
-### **API Endpoints**
+## **API Endpoints**
 
 - **POST /submit**: Submits content to the database and triggers a manual notification.
 - **WebSocket /ws**: Listens for real-time notifications from Redis.
@@ -254,24 +284,21 @@ The **CORS middleware** allows the frontend to communicate with the backend. It 
 
 ## **Test Output**
 
-1. **User Notification Submission (Front End):**
+**User Notification Submission (Front End):**
 
-   ![Front End Input Placeholder](./project_documentation/assets/Frontend_input.png) 
+   ![Front End Input Placeholder](./project_documentation/assets/Frontend_input.png)
 
-1. **User Notification Submission (Postman):**
+**User Notification Submission (Postman):**
 
    ![Postman Input Placeholder](./project_documentation/assets/Postman_input.png)  
-   
 
-2. **Database Content View (Event Driven Notifications):**
+**Database Content View (Event Driven Notifications):**
 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_event_driven_storage.png)  
-   
 
-2. **Database Content View (User Notifications):**
+**Database Content View (User Notifications):**
 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_input_notifcation.png)  
-   
 
 ---
 
