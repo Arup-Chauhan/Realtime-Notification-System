@@ -266,12 +266,12 @@ The **CORS middleware** allows the frontend to communicate with the backend. It 
 2. **Database Content View (Event Driven Notifications):**
 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_event_driven_storage.png)  
-   *(Placeholder: Add a screenshot of the MySQL database output here)*
+   
 
 2. **Database Content View (User Notifications):**
 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_input_notifcation.png)  
-   *(Placeholder: Add a screenshot of the MySQL database output here)*
+   
 
 ---
 
