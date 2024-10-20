@@ -27,8 +27,9 @@ func main() {
 	db := database.InitDB(dsn)
 	defer db.Close()
 
-	log.Println("Application started successfully")
-	log.Println("Server running on http://localhost:8080")
+	//log.Println("Server running on http://localhost:8080")
 	log.Fatal(server.Router(db))
+
+	//log.Println("Application started successfully")
 
 }
