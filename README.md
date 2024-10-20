@@ -1,11 +1,16 @@
-# Realtime Notification System
+# **Realtime Notification System**
 
-This project is a simple web application built in Go that allows users to submit text-based content through a web interface. The content is stored in a MySQL database. This project serves as the foundation for building more complex features such as notifications and content recommendations.
+This project is a **real-time web application** built in **Go** with a **React frontend**. It allows users to **submit content** through a form and uses **Redis Pub/Sub** and **WebSocket** for real-time notifications. Submitted content is stored in a **MySQL database**.
 
-## Table of Contents
+The system supports both **user notifications** via user input and **clock-based events** to simulate real-time triggers.
+
+---
+
+## **Table of Contents**
 
 - [Project Overview](#project-overview)
 - [Features](#features)
+- [Real-World Applications](#real-world-applications)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -17,184 +22,219 @@ This project is a simple web application built in Go that allows users to submit
 - [Contributing](#contributing)
 - [License](#license)
 
-## Project Overview
+---
 
-The Realtime Notification System is designed to be a multi-level project where users can submit content that is stored in a MySQL database. This project is structured to be easily extensible, with future levels planned to include notification systems and content recommendations.
+## **Project Overview**
 
-## Features
+The **Realtime Notification System** integrates a **Go backend**, **Redis-based event-driven notifications**, and a **React frontend**. It allows:
 
-- Submit text-based content via a POST request.
+- **user notifications** through user input via the **custom notification input panel** on the frontend.
+- **Clock-based events** to simulate real-time notifications.
+- **WebSocket connections** for instant updates to the frontend.
+
+### **Frontend UI Example:**
+
+![Frontend UI Example Placeholder](./project_documentation/assets/Frontend%20UI.png)  
+
+
+---
+
+## **Features**
+
+- Submit text-based content via the **frontend input panel** or a POST request.
 - Store submitted content in a MySQL database.
-- Simple and modular project structure, allowing for easy expansion.
-- Frontend developed with React and TypeScript for user interaction.
-- Middleware layer implemented to handle Cross-Origin Resource Sharing (CORS).
+- **Redis Pub/Sub** for event-driven notifications.
+- **WebSocket integration** for real-time updates.
+- **Clock-based events** to simulate real-time triggers.
+- Frontend built with **React and TypeScript**.
+- Middleware for handling **CORS** between backend and frontend.
 
-## Project Structure
+---
+
+## **Real-World Applications**
+
+This notification system has a wide range of real-world applications across multiple industries. Below are some **key use cases**:
+
+1. **News and Media Platforms**  
+   Real-time notifications deliver **breaking news updates** and **content recommendations** to boost user engagement and increase ad revenue through **prompt content delivery**.
+
+2. **FinTech Platforms**  
+   Financial services platforms notify users of **price alerts, transaction updates, and market news**, helping them stay ahead in investments and manage risks in real-time. Notifications also **facilitate smoother financial transactions** and alerts for **payment failures** or **account activities**.
+
+3. **Gaming Platforms and Monetization Strategies**  
+   Online gaming platforms rely heavily on notifications to promote **live events, leaderboard updates**, and **time-sensitive offers**. They use real-time alerts to boost **user retention and monetization** through **in-app purchases, reward claims, and exclusive event notifications**.
+
+4. **E-Commerce Platforms**  
+   E-commerce platforms send **order status updates**, alerts for **promotions**, and **stock availability notifications**, driving higher sales and improving customer satisfaction.
+
+5. **Social Media and Messaging Apps**  
+   Social media platforms like WhatsApp, Twitter, and Instagram use notifications to inform users about **mentions, direct messages, new followers**, and **likes**, keeping the user base engaged.
+
+6. **IoT and Monitoring Systems**  
+   IoT devices send real-time alerts for **system anomalies, motion detection**, or **temperature changes**, enabling quick responses and safety measures. Industrial IoT systems use notifications to flag **equipment failures** and **maintenance needs**.
+
+7. **Healthcare Systems**  
+   Hospitals and clinics notify patients with **appointment reminders**, **lab results**, or **prescription updates**, reducing missed appointments and enhancing patient engagement.
+
+8. **Event and Calendar Management Systems**  
+   Users receive reminders for **upcoming meetings, events**, and **webinars**, ensuring better participation and time management.
+
+---
+
+## **Project Structure**
 
 ```plaintext
 Realtime-Notification-System/
 ├── backend_system/
 │   ├── database/
-│   │   └── db.go                # Handles MySQL database connection
+│   │   └── db.go                # MySQL database connection
 │   ├── handlers/
-│   │   └── submit.go            # Handles submission of content
+│   │   ├── submit.go            # Handles content submission
+│   │   ├── web_socket.go        # WebSocket handler for notifications
+│   │   └── clock_event.go       # Publishes notifications via Redis
 │   └── server/
-│       ├── main.go              # Main entry point of the backend application
-│       └── mysql_schema.sql     # SQL schema for setting up the MySQL database
+│       ├── router.go            # Configures routes and WebSocket handling
+│       ├── main.go              # Entry point of the backend
+│       └── mysql_schema.sql     # SQL schema for MySQL setup
 ├── frontend_application/
-│   ├── public/                  # Public assets for the React frontend
+│   ├── public/                  # Public assets for React frontend
 │   ├── src/
 │   │   ├── App.tsx              # Main React component
 │   │   ├── index.tsx            # React entry point
-│   │   └── ...                  # Other React components and assets
-│   ├── package.json             # Frontend dependencies and scripts
-│   ├── tsconfig.json            # TypeScript configuration
-│   └── ...                      # Other frontend configuration files
+│   └── ...                      # Other React components and assets
 ├── middleware_layer/
-│   └── cors.go                  # Middleware for handling CORS
-├── project_documentation/
-│   ├── MySQL_DB_Output.png      # Screenshot of the MySQL database output
-│   ├── POSTMAN_API_test.png     # Screenshot of the Postman API test
-│   └── ...                      # Other project documentation files
-├── .env                         # Environment variables (not included in version control)
+│   └── cors.go                  # CORS middleware
+├── .env                         # Environment variables (excluded from version control)
 ├── .env.example                 # Example environment variables file
-├── .gitignore                   # Git ignore file to exclude sensitive and unnecessary files
-├── go.mod                       # Go module file
-└── go.sum                       # Go checksum file for dependencies
+├── go.mod                       # Go module dependencies
+├── go.sum                       # Checksum file for Go dependencies
 ```
 
-## Installation
+---
 
-### Prerequisites
+## **Installation**
 
-- Go (version 1.23 or later)
+### **Prerequisites**
+
+- Go (v1.23 or later)
 - Node.js and npm (for frontend)
-- MySQL
+- Redis Server
+- MySQL Server
 
-### Clone the Repository
+### **Clone the Repository**
 
 ```bash
 git clone https://github.com/yourusername/Realtime-Notification-System.git
 cd Realtime-Notification-System
 ```
 
-### Backend Setup
+---
 
-#### Install Dependencies
+### **Backend Setup**
 
-Ensure you have the required Go packages:
+1. **Install Go Dependencies:**
 
-```bash
-cd backend_system
-go mod tidy
-```
+   ```bash
+   cd backend_system
+   go mod tidy
+   ```
 
-#### Set Up the Database
+2. **Set Up MySQL Database:**
 
-1. Start your MySQL server.
-2. Create the database and table using the provided `mysql_schema.sql`:
+   ```bash
+   mysql -u your_username -p realtime_notification_system < backend_system/server/mysql_schema.sql
+   ```
 
-```bash
-mysql -u your_username -p realtime_notification_system < backend_system/server/mysql_schema.sql
-```
+3. **Run Redis Server:**
 
-### Frontend Setup
+   ```bash
+   redis-server
+   ```
 
-1. Navigate to the `frontend_application` directory:
+---
 
-```bash
-cd frontend_application
-```
+### **Frontend Setup**
 
-2. Install the frontend dependencies:
+1. **Navigate to Frontend Directory:**
 
-```bash
-npm install
-```
+   ```bash
+   cd frontend_application
+   ```
 
-### Set Up Environment Variables
+2. **Install Frontend Dependencies:**
 
-1. Create a `.env` file in the project root by copying `.env.example`:
+   ```bash
+   npm install
+   ```
 
-```bash
-cp .env.example .env
-```
+---
 
-2. Edit the `.env` file with your database credentials:
+### **Set Up Environment Variables**
 
-```plaintext
-MYSQL_USER=your_username
-MYSQL_PASSWORD=your_password
-MYSQL_DB=realtime_notification_system
-MYSQL_HOST=127.0.0.1
-MYSQL_PORT=3306
-```
+1. **Copy `.env.example` to `.env`:**
 
-### Run the Backend
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Update Database Credentials in `.env`:**
+
+   ```plaintext
+   MYSQL_USER=your_username
+   MYSQL_PASSWORD=your_password
+   MYSQL_DB=realtime_notification_system
+   MYSQL_HOST=127.0.0.1
+   MYSQL_PORT=3306
+   ```
+
+---
+
+### **Run the Backend**
 
 ```bash
 cd backend_system/server
 go run main.go
 ```
 
-The server should start on `http://localhost:8080`.
+---
 
-### Run the Frontend
-
-In a new terminal window, navigate to the `frontend_application` directory and start the React development server:
+### **Run the Frontend**
 
 ```bash
 cd frontend_application
 npm start
 ```
 
-The frontend should start on `http://localhost:3000`.
+---
 
-## Usage
+## **Usage**
 
-### Submit Content
+### **User Notification Submission**
 
-You can submit content to the server using the frontend form, Postman, or `curl`.
-
-#### Using `curl`
+Submit content via the frontend **custom notification input panel** or using Postman:
 
 ```bash
-curl -X POST -d "content=This is a test submission" http://localhost:8080/submit
+curl -X POST -d "content=Manual Notification" http://localhost:8080/submit
 ```
 
-#### Using Postman
+---
 
-1. Create a new POST request to `http://localhost:8080/submit`.
-2. Under the `Body` tab, select `x-www-form-urlencoded`.
-3. Add a key-value pair:
-   - Key: `content`
-   - Value: `Your content here`
-4. Send the request.
+### **Clock-Based Event-Driven Notifications**
 
-### View Submitted Content
+Every minute, a **clock-based event** publishes a notification via Redis to simulate real-time events.
 
-You can view the submitted content in your MySQL database:
+---
 
-```sql
-USE realtime_notification_system;
-SELECT * FROM submissions;
-```
+### **API Endpoints**
 
-## API Endpoints
+- **POST /submit**: Submits content to the database and triggers a manual notification.
+- **WebSocket /ws**: Listens for real-time notifications from Redis.
 
-- **POST /submit**: Accepts a `content` field and stores it in the database.
+---
 
-## Environment Variables
+## **Database**
 
-- `MYSQL_USER`: The MySQL username.
-- `MYSQL_PASSWORD`: The MySQL password.
-- `MYSQL_DB`: The name of the MySQL database.
-- `MYSQL_HOST`: The MySQL server host (e.g., `127.0.0.1`).
-- `MYSQL_PORT`: The MySQL server port (default is `3306`).
-
-## Database
-
-The project uses MySQL to store submitted content. The `submissions` table has the following schema:
+The **MySQL database** stores submitted content using the following schema:
 
 ```sql
 CREATE TABLE submissions (
@@ -204,56 +244,39 @@ CREATE TABLE submissions (
 );
 ```
 
-## Middleware
+---
 
-The project includes a middleware layer to handle Cross-Origin Resource Sharing (CORS). This is necessary when the frontend and backend are running on different origins (e.g., different ports or domains). The CORS middleware allows the frontend to make requests to the backend without encountering cross-origin errors.
+## **Middleware**
 
-### CORS Middleware Implementation
+The **CORS middleware** allows the frontend to communicate with the backend. It is implemented in `middleware_layer/cors.go` and applied to backend routes.
 
-The CORS middleware is implemented in `middleware_layer/cors.go` and is applied to the routes in the backend.
+---
 
-```go
-package middleware
+## **Test Output**
 
-import (
- "net/http"
-)
+1. **User Notification Submission (Front End):**
 
-// EnableCORS is a middleware that handles Cross-Origin Resource Sharing (CORS)
-func EnableCORS(next http.Handler) http.Handler {
- return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-  w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-  w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-  w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+   ![Front End Input Placeholder](./project_documentation/assets/Frontend_input.png) 
 
-  // Handle preflight requests
-  if r.Method == "OPTIONS" {
-   return
-  }
+1. **User Notification Submission (Postman):**
 
-  next.ServeHTTP(w, r)
- })
-}
-```
+   ![Postman Input Placeholder](./project_documentation/assets/Postman_input.png)  
+   
 
-This middleware is crucial for allowing the frontend, typically running on `http://localhost:3000`, to interact with the backend on `http://localhost:8080` during development.
+2. **Database Content View (Event Driven Notifications):**
 
-## Test Output
+   ![MySQL Output Placeholder](./project_documentation/assets/MySQL_event_driven_storage.png)  
+   *(Placeholder: Add a screenshot of the MySQL database output here)*
 
-This section provides evidence that the system works as intended by showcasing the results of testing the `/submit` endpoint.
+2. **Database Content View (User Notifications):**
 
-### Postman Content Submission
+   ![MySQL Output Placeholder](./project_documentation/assets/MySQL_input_notifcation.png)  
+   *(Placeholder: Add a screenshot of the MySQL database output here)*
 
-Here is a screenshot of a POST request made in Postman to the `/submit` endpoint, with the content being successfully submitted:
+---
 
-![Postman API Test](project_documentation/POSTMAN_API_test.png)
+## **Contributing**
 
-### MySQL Database Content
+Contributions are welcome! Fork the repository and submit a pull request.
 
-Here is a screenshot of the MySQL database showing the submitted content stored in the `submissions` table:
-
-![MySQL DB Output](project_documentation/MySQL_DB_Output.png)
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
+---
