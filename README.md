@@ -263,6 +263,7 @@ The **CORS middleware** allows the frontend to communicate with the backend. It 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_input_notifcation.png)  
 
 ---
+
 ## **Docker Deployment**
 
 ### **Docker Deployment Instructions**
@@ -316,17 +317,6 @@ Did following **changes and configurations** made for Docker deployment:
 
 ---
 
-#### **Usage**
-
-- **Frontend**: Access the frontend UI to submit notifications.
-- **Backend**: Handles the data insertion and triggers Redis notifications.
-- **Database**: Verify data storage with MySQL queries:
-
-  ```sql
-  SELECT * FROM submissions;
-  ```
-
----
 ## **Contributing**
 
 Contributions are welcome! Fork the repository and submit a pull request.
