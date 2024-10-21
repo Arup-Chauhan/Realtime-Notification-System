@@ -12,13 +12,13 @@ The system supports both **user notifications** via user input and **clock-based
 - [Features](#features)
 - [Real-World Applications](#real-world-applications)
 - [System Architecture](#system-architecture)
-- [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Database](#database)
 - [Middleware](#middleware)
 - [Test Output](#test-output)
+- [Docker Deployment](#docker-deployment)
 - [Contributing](#contributing)
 
 ---
@@ -110,37 +110,6 @@ Here is a system design diagram for the system
 ```
 
 ![SA Diagram](./project_documentation/assets/SA/System%20Architecture%20File.png)  
-
-## **Project Structure**
-
-```plaintext
-Realtime-Notification-System/
-├── backend_system/
-│   ├── database/
-│   │   └── db.go                # MySQL database connection
-│   ├── handlers/
-│   │   ├── submit.go            # Handles content submission
-│   │   ├── web_socket.go        # WebSocket handler for notifications
-│   │   └── clock_event.go       # Publishes notifications via Redis
-│   └── server/
-│       ├── router.go            # Configures routes and WebSocket handling
-│       ├── main.go              # Entry point of the backend
-│       └── mysql_schema.sql     # SQL schema for MySQL setup
-├── frontend_application/
-│   ├── public/                  # Public assets for React frontend
-│   ├── src/
-│   │   ├── App.tsx              # Main React component
-│   │   ├── index.tsx            # React entry point
-│   └── ...                      # Other React components and assets
-├── middleware_layer/
-│   └── cors.go                  # CORS middleware
-├── .env                         # Environment variables (excluded from version control)
-├── .env.example                 # Example environment variables file
-├── go.mod                       # Go module dependencies
-├── go.sum                       # Checksum file for Go dependencies
-```
-
----
 
 ## **Installation**
 
@@ -265,20 +234,13 @@ Every minute, a **clock-based event** publishes a notification via Redis to simu
 ## **Database**
 
 The **MySQL database** stores submitted content using the following schema:
-
-```sql
-CREATE TABLE submissions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT NOT NULL,
-    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+Added a init.db (`backend_system/sql` folder) file for configuring the database
 
 ---
 
 ## **Middleware**
 
-The **CORS middleware** allows the frontend to communicate with the backend. It is implemented in `middleware_layer/cors.go` and applied to backend routes.
+The **CORS middleware** allows the frontend to communicate with the backend. It is implemented in `backend_system/middleware_layer/cors.go` and applied to backend routes.
 
 ---
 
@@ -301,7 +263,70 @@ The **CORS middleware** allows the frontend to communicate with the backend. It 
    ![MySQL Output Placeholder](./project_documentation/assets/MySQL_input_notifcation.png)  
 
 ---
+## **Docker Deployment**
 
+### **Docker Deployment Instructions**
+
+Did following **changes and configurations** made for Docker deployment:
+
+1. **Docker Compose File**:
+   - Added `docker-compose.yml` to coordinate services: **backend**, **frontend**, **MySQL**, and **Redis**.
+   - Specified health checks and dependencies for the backend to wait until MySQL and Redis are ready.
+
+2. **Environment Variables**:
+   - Extended the `.env.example` file to include Docker-specific variables.
+   - Updated Redis and MySQL connection settings from `localhost` to their Docker container names.
+
+3. **Redis and MySQL Client Changes**:
+   - Changed Redis connection in the backend code to `redis:6379`.
+   - Changed MySQL connection in the backend to `mysql:3306`.
+
+4. **SQL Schema File for Database Setup**:
+   - Added a **template SQL file** (`permission.sql.template`) schema file to add permissions are correctly, if the database does not grant them initially.
+
+5. **Backend and Frontend Dockerfiles**:
+   - Created separate Dockerfiles for **backend** and **frontend** services to containerize the applications efficiently.
+
+---
+
+#### **Running the Project with Docker**
+
+1. **Build and Start Docker Containers**:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+2. **Verify Services**:
+   - Ensure MySQL, Redis, backend, and frontend services are running correctly with:
+
+     ```bash
+     docker ps
+     ```
+
+3. **Access Frontend**:
+   - Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+4. **Backend API**:
+   - Test the backend API via Postman or curl:
+
+     ```bash
+     curl -X POST -d "content=Hello Docker" http://localhost:8080/submit
+     ```
+
+---
+
+#### **Usage**
+
+- **Frontend**: Access the frontend UI to submit notifications.
+- **Backend**: Handles the data insertion and triggers Redis notifications.
+- **Database**: Verify data storage with MySQL queries:
+
+  ```sql
+  SELECT * FROM submissions;
+  ```
+
+---
 ## **Contributing**
 
 Contributions are welcome! Fork the repository and submit a pull request.
