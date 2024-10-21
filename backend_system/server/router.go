@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"Realtime-Notification-System/backend_system/handlers"
-	middleware "Realtime-Notification-System/middleware_layer"
+	middleware "Realtime-Notification-System/backend_system/middleware_layer"
 
 	"github.com/go-redis/redis/v8"
 )
