@@ -23,6 +23,11 @@ jobs:
         go-version: ${{ matrix.go-version }}
         cache: true  # Caching dependencies
 
+    - name: Install golangci-lint
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
+        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+
     - name: Tidy Dependencies
       run: go mod tidy
       working-directory: ./backend_system  # Ensure go.mod is cleaned up
@@ -48,8 +53,8 @@ jobs:
         name: coverage-and-tests
         path: backend_system/coverage.out  # Upload coverage report
 
-    - name: Verify Linting
+    - name: Run Linting
       run: golangci-lint run ./...
-      working-directory: ./backend_system  # Ensure code follows style guidelines
+      working-directory: ./backend_system  # Run code linting
       env:
         GOLANGCI_LINT_CACHE: ${{ runner.temp }}/golangci-lint
