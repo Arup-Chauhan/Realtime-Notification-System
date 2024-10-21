@@ -23,23 +23,33 @@ jobs:
         go-version: ${{ matrix.go-version }}
         cache: true  # Caching dependencies
 
+    - name: Tidy Dependencies
+      run: go mod tidy
+      working-directory: ./backend_system  # Ensure go.mod is cleaned up
+
     - name: Restore Go Dependencies
       run: go mod download
-      working-directory: ./backend_system  # Updated path
+      working-directory: ./backend_system  # Restore dependencies
 
     - name: Build
       run: go build -v ./...
-      working-directory: ./backend_system  # Updated path
+      working-directory: ./backend_system  # Build backend
 
     - name: Run Tests with Coverage
       run: |
         go test -v -coverprofile=coverage.out ./...
         go tool cover -func=coverage.out
-      working-directory: ./backend_system  # Updated path
+      working-directory: ./backend_system  # Run tests and generate coverage
 
     - name: Upload Coverage and Test Results
       if: always()
       uses: actions/upload-artifact@v3
       with:
         name: coverage-and-tests
-        path: backend_system/coverage.out  # Updated path
+        path: backend_system/coverage.out  # Upload coverage report
+
+    - name: Verify Linting
+      run: golangci-lint run ./...
+      working-directory: ./backend_system  # Ensure code follows style guidelines
+      env:
+        GOLANGCI_LINT_CACHE: ${{ runner.temp }}/golangci-lint
