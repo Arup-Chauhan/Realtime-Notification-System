@@ -1,0 +1,22 @@
+-- Placeholder SQL file: Do not run this directly
+
+-- EXIT to prevent accidental execution
+EXIT;
+
+-- The following commands should only be executed manually:
+/*
+-- See all users
+SELECT user, host FROM mysql.user;
+
+-- Create or update the user with secure password
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+
+-- Grant privileges only on the specific database
+GRANT ALL PRIVILEGES ON realtime_notification_system.* TO '${MYSQL_USER}'@'%';
+
+-- Apply changes
+FLUSH PRIVILEGES;
+
+-- Show the grants to confirm the changes
+SHOW GRANTS FOR '${MYSQL_USER}'@'%';
+/*

@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"Realtime-Notification-System/backend_system/handlers"
-	middleware "Realtime-Notification-System/middleware_layer"
+	middleware "Realtime-Notification-System/backend_system/middleware_layer"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -20,7 +20,7 @@ import (
 func Router(db *sql.DB) error {
 	// Initialize Redis client
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379", // Use WSL IP if needed
+		Addr: "redis:6379", // Changed from localhost for docker
 	})
 
 	// Create a request-scoped context for handlers

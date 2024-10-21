@@ -116,6 +116,8 @@ Here is a system design diagram for the system
 ```plaintext
 Realtime-Notification-System/
 ├── backend_system/
+|   ├── go.mod                       # Go module dependencies
+|   ├── go.sum                       # Checksum file for Go dependencies
 │   ├── database/
 │   │   └── db.go                # MySQL database connection
 │   ├── handlers/
@@ -126,6 +128,7 @@ Realtime-Notification-System/
 │       ├── router.go            # Configures routes and WebSocket handling
 │       ├── main.go              # Entry point of the backend
 │       └── mysql_schema.sql     # SQL schema for MySQL setup
+| 
 ├── frontend_application/
 │   ├── public/                  # Public assets for React frontend
 │   ├── src/
@@ -136,8 +139,7 @@ Realtime-Notification-System/
 │   └── cors.go                  # CORS middleware
 ├── .env                         # Environment variables (excluded from version control)
 ├── .env.example                 # Example environment variables file
-├── go.mod                       # Go module dependencies
-├── go.sum                       # Checksum file for Go dependencies
+
 ```
 
 ---

@@ -1,4 +1,4 @@
-module Realtime-Notification-System
+module Realtime-Notification-System/backend_system
 
 go 1.23.0
 
