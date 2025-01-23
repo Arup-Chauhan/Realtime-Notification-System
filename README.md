@@ -92,15 +92,7 @@ This system drives **real-time engagement** across multiple industries. Below ar
 
 - Provide reminders for **meetings, events**, and **webinars**.  
 - Improve participation and ensure **better time management**.
-
----
-
-This **format**:
-
-- Uses **bullet points** for clarity.
-- Keeps each **use case brief** and highlights the **core impact**.
-- Aligns with the rest of the README structure for a consistent look.
-
+- 
 ---
 
 ## **System Architecture**
