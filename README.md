@@ -92,7 +92,6 @@ This system drives **real-time engagement** across multiple industries. Below ar
 
 - Provide reminders for **meetings, events**, and **webinars**.  
 - Improve participation and ensure **better time management**.
-- 
 ---
 
 ## **System Architecture**
